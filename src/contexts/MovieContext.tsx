@@ -5,6 +5,8 @@ interface Movie {
   title: string;
   release_date: string;
   poster_path: string;
+  overview: string;
+  vote_average: number;
 }
 
 interface MovieContextType {
@@ -19,12 +21,10 @@ const MovieContext = createContext<MovieContextType>({} as MovieContextType);
 export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({ children }: { children: React.ReactNode }) => {
-  const [favorites, setFavorites] = useState<Movie[]>([]);
-
-  useEffect(() => {
+  const [favorites, setFavorites] = useState<Movie[]>(() => {
     const storedFavs = localStorage.getItem("favorites");
-    if (storedFavs) setFavorites(JSON.parse(storedFavs));
-  }, []);
+    return storedFavs ? JSON.parse(storedFavs) : [];
+  });
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
