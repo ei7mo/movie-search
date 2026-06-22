@@ -3,14 +3,16 @@ import { useState, type FormEvent, useEffect } from "react";
 import "../css/Home.css";
 import { searchMovies, getPopularMovies } from "../services/api";
 
-function Home() {
-  interface Movie {
-    id: number;
-    title: string;
-    release_date: string;
-    poster_path: string;
-  }
+interface Movie {
+  id: number;
+  title: string;
+  release_date: string;
+  poster_path: string;
+  overview: string;
+  vote_average: number;
+}
 
+function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState("");
