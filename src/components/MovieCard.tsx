@@ -1,5 +1,6 @@
 import "../css/MovieCard.css";
 import { useMovieContext } from "../contexts/MovieContext";
+import type { MouseEvent } from "react";
 
 interface Movie {
   id: number;
@@ -8,11 +9,21 @@ interface Movie {
   poster_path: string;
   overview: string;
   vote_average: number;
+  genre_ids?: number[];
 }
 
-function MovieCard({ movie }: { movie: Movie }) {
+function MovieCard({
+  movie,
+  genres = {},
+}: {
+  movie: Movie;
+  genres?: Record<number, string>;
+}) {
   const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext();
   const favorite = isFavorite(movie.id);
+
+  const genreNames =
+    movie.genre_ids?.map((genreId) => genres[genreId]).filter(Boolean) ?? [];
 
   function onFavoriteClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -42,6 +53,15 @@ function MovieCard({ movie }: { movie: Movie }) {
       <div className="movie-info">
         <h3>{movie.title}</h3>
         <p>{movie.release_date?.split("-")[0]}</p>
+        {genreNames.length > 0 && (
+          <div className="genre-list">
+            {genreNames.map((genre) => (
+              <span className="genre-tag" key={genre}>
+                {genre}
+              </span>
+            ))}
+          </div>
+        )}
         <p className="overview">{movie.overview}</p>
       </div>
     </div>

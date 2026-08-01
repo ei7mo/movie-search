@@ -1,7 +1,11 @@
 import MovieCard from "../components/MovieCard";
 import { useState, type FormEvent, useEffect } from "react";
 import "../css/Home.css";
-import { searchMovies, getPopularMovies } from "../services/api";
+import {
+  searchMovies,
+  getPopularMovies,
+  getMovieGenres,
+} from "../services/api";
 
 interface Movie {
   id: number;
@@ -10,19 +14,35 @@ interface Movie {
   poster_path: string;
   overview: string;
   vote_average: number;
+  genre_ids?: number[];
+}
+
+interface Genre {
+  id: number;
+  name: string;
 }
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [genres, setGenres] = useState<Record<number, string>>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadPopularMovies = async () => {
       try {
-        const popularMovies = await getPopularMovies();
+        const [popularMovies, genreList] = await Promise.all([
+          getPopularMovies(),
+          getMovieGenres(),
+        ]);
+
         setMovies(popularMovies);
+        setGenres(
+          Object.fromEntries(
+            genreList.map((genre: Genre) => [genre.id, genre.name]),
+          ) as Record<number, string>,
+        );
       } catch (err) {
         console.log(err);
         setError("Failed to load movies...");
@@ -77,7 +97,7 @@ function Home() {
       ) : (
         <div className="movies-grid">
           {movies.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
+            <MovieCard movie={movie} genres={genres} key={movie.id} />
           ))}
         </div>
       )}

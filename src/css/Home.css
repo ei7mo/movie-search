@@ -60,3 +60,32 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.error-message {
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: rgba(229, 9, 20, 0.15);
+  border: 1px solid #e50914;
+  border-radius: 4px;
+  color: #ff6b6b;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.2rem;
+  color: #999;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

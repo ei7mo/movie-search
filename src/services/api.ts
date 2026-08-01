@@ -16,3 +16,12 @@ export const searchMovies = async (query: string) => {
 
   return data.results;
 };
+
+export const getMovieGenres = async () => {
+  const response = await fetch(
+    `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en`,
+  );
+  const data = await response.json();
+
+  return data.genres;
+};
