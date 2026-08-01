@@ -1,6 +1,5 @@
 import "../css/MovieCard.css";
 import { useMovieContext } from "../contexts/MovieContext";
-import type { MouseEvent } from "react";
 
 interface Movie {
   id: number;
